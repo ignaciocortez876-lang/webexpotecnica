@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ind 24/7 - Invernadero Inteligente</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="scripts.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>🌱 Invernadero Inteligente: Ind 24/7</h1>
+      <p>Proyecto de Algoritmos y Programación y de Automatización</p>
+      <p>Escuela Industrial N°9 | Expotécnica 2025</p>
+    </header>
+
+    <div class="contenedor">
+      <section id="introduccion">
+        <h2>1. El Problema y la Solución Automatizada</h2>
+        <p>
+          El desafío de la agricultura moderna es maximizar la producción
+          minimizando el uso de recursos.
+        </p>
+        <p>
+          Nuesto proyecto, Ind N°9, presenta un prototipo funcional de un
+          invernadero automatizado diseñado para simular y controlar el
+          microclima y el proceso de siembra de manera autónoma, aplicando los
+          conocimientos adquiridos en robótica y lógica de programación.
+        </p>
+        <p>
+          Este modelo sienta las bases para un sistema escalable, eficiente y
+          preciso.
+        </p>
+      </section>
+
+      <section id="desarrollo">
+        <h2>2. Arquitectura y Componentes del Prototipo</h2>
+
+        <div class="prototip">Diagrama de la maqueta del invernadero:</div>
+
+        <h3>Actuadores (Output)</h3>
+        <ul>
+          <li>Motor de Labranza: Este motor fue reutilizado de una impresora en desuso, su funcion principal en este proyecto es la de arar las semillas que sean sembradas. 
+            Atraves de pulsadores este motor se mueve de izquierda a derecha logrando asi abrir la tierra y hacer espacio para las semillas cuando va hacia la izquierda y cubrirlas de tierra cuando vuelve hacia a la derecha.</li>
+          <li>Servomotor Dispensador de Semillas: Este servomotor cumple la funcion de inclinar la pequeña caja la cual contiene las semillas  a sembrar.
+             Este una vez accionado activa su brazo lo cual hace que la caja contenedora deje caer las semillas luego de que el motor de labranza abra la tierra y les haga espacio.</li>
+          <li>Cooler (Ventilador):
+          Este ventilador cumple la funcion de refirgerar la zona de cultivo gracias al aire fresco que ingresa atraves del mismo</li>
+          <li>Bomba de Riego: Esta bomba de agua se encarga de suministrar el liquido suficiente para la tierra de los cultivos a traves de mangueras. 
+            Esta bomba de agua es suministrada gracias a las mangueras y un recipiente plastico lleno de agua.</li>
+        </ul>
+      </section>
+
+      <section id="algoritmos">
+        <h2>3. Lógica de Control y Algoritmos (Teoría y Taller)</h2>
+        <p> La lógica de control del invernadero se basa en la lectura de pulsadores que simulan las decisiones de un sistema automatizado. 
+          Cada entrada activa una salida específica (motor, servo, cooler o bomba). 
+          Esto se logra utilizando estructuras condicionales <code>if</code> y tiempos controlados con <code>delay()</code>.
+        </p>
+</p>
+
+        <h3>Ejemplo de Algoritmo de Riego</h3>
+        <p>
+          La bomba de riego se activa al presionar un pulsador. Esto simula el funcionamiento automático 
+          que podría implementarse con un sensor de humedad del suelo. 
+          Al activarse el relé, la bomba se enciende por un tiempo determinado y luego se apaga automáticamente.
+        </p>
+
+        <h3>Control de Movimiento Lineal</h3>
+        <p>El motor de labranza se controla con dos pulsadores: uno para el movimiento hacia la izquierda y otro para la derecha. 
+          Este control se logra con dos señales digitales (IN1 e IN2) que determinan la dirección del giro.</p>
+<pre><code>
+// Pseudocódigo del movimiento del motor
+void loop() {
+
+  digitalWrite(rele, HIGH);
+  delay(1000);
+  digitalWrite(rele, LOW);
+  delay(1000);
+  if (digitalRead(pulsador_izquierda) == LOW){
+  delay(10);
+  digitalWrite(IN1, HIGH);
+  delay(200);}
+  if (digitalRead(pulsador_izquierda)==HIGH){
+    digitalWrite(IN1, LOW);
+    delay(200);
+  }
+        </code></pre>
+
+        <p>
+          En el código implementado con ESP32, esta lógica permite controlar de forma manual la dirección 
+          del motor, evitando que ambas direcciones se activen al mismo tiempo.
+        </p>
+
+        <h3>Control del Servomotor de Siembra</h3>
+        <p>
+          El servomotor se activa con un pulsador. Al presionarlo, se mueve 90° para inclinar la caja y soltar las semillas. 
+          Al soltar el botón, el servo regresa a su posición inicial (0°).
+        </p>
+         <pre><code>
+// Fragmento real del control del servo
+  if (digitalRead(pulsadorsemi) == LOW) {
+    delay(10);  // Anti rebote
+    servosemillas.write(90); 
+  //  servoprobar.write(90);// Mueve el servo
+    //digitalWrite(ledsemi, HIGH); // Enciende LED indicador
+    delay(10);
+  } else {
+    servosemillas.write(0); 
+    //servoprobar.write(0);// Vuelve a posición inicial
+    //digitalWrite(ledsemi, LOW);
+    delay(200);
+  }
+        </code></pre>
+      </section>
+
+      <section id="escalabilidad">
+  <h2>4. Del aula al campo: Visión de Escalabilidad Industrial</h2>
+  <p>
+    Nuestro prototipo fue diseñado con un enfoque modular, pensado para que cada maqueta funcione como una
+    <strong>zona de cultivo inteligente</strong> dentro de una estructura mayor, como un galpón agrícola.
+    De esta forma, la maqueta no solo representa un modelo didáctico, sino una unidad real de automatización adaptable
+    a diferentes escalas.
+  </p>
+
+  <h3>Escenario de Escalado: Galpón de Producción</h3>
+  <p>
+    En una aplicación real, el sistema podría instalarse dentro de un galpón agrícola estándar de aproximadamente
+    <strong>30 metros de largo por 10 metros de ancho y 4 metros de alto</strong> (unos 300 m²).
+    Este espacio se dividiría en <strong>módulos independientes</strong> equivalentes a nuestra maqueta.
+    Cada módulo controlaría su propio riego, ventilación y siembra, permitiendo que el sistema funcione incluso si
+    una zona presenta fallas o condiciones diferentes.
+  </p>
+
+  <h3>Modelo MLC-CC (Módulo Local de Control - Controlador Central)</h3>
+  <ul>
+    <li>
+      <strong>Módulo Local de Control (MLC):</strong> Representado por nuestra maqueta actual.
+      Es un microcontrolador (por ejemplo, Arduino o ESP32) que gestiona los sensores y actuadores de una sola zona.
+      Toma decisiones inmediatas (activar el ventilador, regar, arar o sembrar).
+    </li>
+    <li>
+      <strong>Controlador Central (CC):</strong> En un sistema a gran escala, un CC (por ejemplo, una Raspberry Pi o
+      servidor central) recibiría datos de todos los MLCs mediante una red inalámbrica (WiFi o LoRa), analizando el
+      estado general del galpón y enviando órdenes coordinadas a cada zona.
+    </li>
+  </ul>
+
+  <h3>Materiales y Adaptaciones a Gran Escala</h3>
+  <p>
+    Para construir el sistema real, los materiales serían reemplazados por versiones industriales:
+  </p>
+  <ul>
+    <li><strong>Estructura del galpón:</strong> Tubos de acero galvanizado o aluminio.</li>
+    <li><strong>Rieles y soportes:</strong> Metales livianos o acero inoxidable.</li>
+    <li><strong>Paredes y techo:</strong> Policarbonato alveolar o film agrícola traslúcido.</li>
+    <li><strong>Sistema de riego:</strong> Tuberías de PVC, válvulas solenoides y control automatizado.</li>
+    <li><strong>Ventiladores:</strong> Coolers industriales de 12V o 220V controlados por relés.</li>
+  </ul>
+
+  <h3>Funcionamiento Coordinado</h3>
+  <p>
+    Cada módulo del galpón opera de manera <strong>individual</strong> pero está conectado al sistema central.
+    Esto permite que el invernadero responda de forma inteligente:
+  </p>
+  <ul>
+    <li>Si una zona detecta temperatura alta, activa solo su ventilador.</li>
+    <li>Si el suelo está seco, el riego se enciende en esa zona sin afectar las demás.</li>
+    <li>Si se programa una siembra general, los servos de cada módulo actúan en secuencia.</li>
+  </ul>
+
+  <h3>Ventajas del Sistema Escalable</h3>
+  <ul>
+    <li> Modularidad: cada módulo funciona de forma independiente.</li>
+    <li> Ahorro de agua y energía: solo se activan los sistemas necesarios.</li>
+    <li> Fácil mantenimiento y expansión.</li>
+    <li> Monitoreo centralizado con posibilidad de app o interfaz web.</li>
+  </ul>
+
+  <p class="resumen">
+    En resumen, <strong>cada maqueta representa una célula de automatización</strong> dentro de un sistema agrícola
+    mayor. Al replicar decenas de estas unidades dentro de un galpón, se obtiene un invernadero industrial inteligente,
+    eficiente y adaptable a distintas condiciones de cultivo.
+  </p>
+</section>
+
+
+      <section id="video">
+        <h2>5. Prototipo en accion (fase de desarrollo)</h2>
+        <p>
+          Un pequeño vistazo de como se ve la maqueta en face inicial.
+        </p>
+        <div class="media-content">
+          <video controls>
+            <source src="videos/prueba.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>
+        &copy; Expotécnica 2025 | Proyecto desarrollado por Grosso Tomas,Cortez
+        Ignacio,Ferreyra Lorenzo y Perez Simón
+      </p>
+    </footer>
+  </body>
+</html>
